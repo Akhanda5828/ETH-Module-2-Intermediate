@@ -1,6 +1,6 @@
 # ETH-Module-2-Intermediate
 
-We will create a HotelReservation smart contract which has several functions like withdraw, deposit, reserve room and cancel room.
+We will create a SocialVerse smart contract which has several functions like withdraw, deposit, reserve room and cancel room.
 
 
 Now we will first of all create a smart contract and then deploy in in VS Code using hardhat.
@@ -8,83 +8,97 @@ Now we will first of all create a smart contract and then deploy in in VS Code u
 
 ```js
 
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.26;
 
-contract HotelReservation {
-    address payable public owner;
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+
+contract SocialVerse is Ownable, ReentrancyGuard {
+
     uint256 public balance;
+    bool public paused;
 
     event Deposit(uint256 amount);
     event Withdraw(uint256 amount);
-    event RoomReserved(uint256 roomId);
-    event RoomCancelled(uint256 roomId);
+    event Paused();
+    event Unpaused();
+    event PostCreated(address indexed user, string content, uint256 timestamp);
+    event PostLiked(address indexed user, uint256 postId, uint256 timestamp);
 
-    struct Room {
-        bool isReserved;
-        address reservedBy;
+    struct Post {
+        address user;
+        string content;
+        uint256 timestamp;
+        uint256 likes;
     }
 
-    mapping(uint256 => Room) public rooms;
+    Post[] public posts;
 
-    constructor(uint initBalance) payable {
-        owner = payable(msg.sender);
-        balance = initBalance;
+    constructor() Ownable(msg.sender) {
+        balance = 0;
+        paused = false;
     }
 
-    function getBalance() public view returns(uint256) {
+    modifier whenNotPaused() {
+        require(!paused, "Contract is paused");
+        _;
+    }
+
+    function getBalance() public view returns (uint256) {
         return balance;
     }
 
-    function deposit(uint256 _amount) public payable {
-        uint _previousBalance = balance;
-
-        require(msg.sender == owner, "You are not the owner of this account");
-
-        balance += _amount;
+    function deposit(uint256 _amount) public payable onlyOwner whenNotPaused {
+        uint256 _previousBalance = balance;
+        balance += _amount; // Direct addition is safe in newer Solidity versions
         assert(balance == _previousBalance + _amount);
-
         emit Deposit(_amount);
     }
 
     error InsufficientBalance(uint256 balance, uint256 withdrawAmount);
 
-    function withdraw(uint256 _withdrawAmount) public {
-        require(msg.sender == owner, "You are not the owner of this account");
-
-        uint _previousBalance = balance;
+    function withdraw(uint256 _withdrawAmount) public onlyOwner nonReentrant whenNotPaused {
+        uint256 _previousBalance = balance;
         if (balance < _withdrawAmount) {
-            revert InsufficientBalance({
-                balance: balance,
-                withdrawAmount: _withdrawAmount
-            });
+            revert InsufficientBalance({ balance: balance, withdrawAmount: _withdrawAmount });
         }
-
-        balance -= _withdrawAmount;
-        assert(balance == (_previousBalance - _withdrawAmount));
-
+        balance -= _withdrawAmount; // Direct subtraction is safe in newer Solidity versions
+        assert(balance == _previousBalance - _withdrawAmount);
         emit Withdraw(_withdrawAmount);
+        payable(owner()).transfer(_withdrawAmount);
     }
 
-    function reserveRoom(uint256 _roomId) public {
-        require(!rooms[_roomId].isReserved, "Room already reserved");
-
-        rooms[_roomId].isReserved = true;
-        rooms[_roomId].reservedBy = msg.sender;
-
-        emit RoomReserved(_roomId);
+    function pause() public onlyOwner {
+        paused = true;
+        emit Paused();
     }
 
-    function cancelRoom(uint256 _roomId) public {
-        require(rooms[_roomId].isReserved, "Room is not reserved");
-        require(rooms[_roomId].reservedBy == msg.sender, "You are not the reserver of this room");
+    function unpause() public onlyOwner {
+        paused = false;
+        emit Unpaused();
+    }
 
-        rooms[_roomId].isReserved = false;
-        rooms[_roomId].reservedBy = address(0);
+    function changeOwner(address newOwner) public onlyOwner {
+        transferOwnership(newOwner);
+    }
 
-        emit RoomCancelled(_roomId);
+    function createPost(string memory content) public whenNotPaused {
+        posts.push(Post({ user: msg.sender, content: content, timestamp: block.timestamp, likes: 0 }));
+        emit PostCreated(msg.sender, content, block.timestamp);
+    }
+
+    function likePost(uint256 postId) public whenNotPaused {
+        require(postId < posts.length, "Post does not exist");
+        posts[postId].likes += 1; // Direct addition is safe in newer Solidity versions
+        emit PostLiked(msg.sender, postId, block.timestamp);
+    }
+
+    function getPosts() public view returns (Post[] memory) {
+        return posts;
     }
 }
+
 ```
 After creating this file we will have to deploy it using hardhat so we follow the following instructions:
 
@@ -98,4 +112,9 @@ After this, the project will be running on your localhost.
 Typically at http://localhost:3000/
 
 
-We will note down the deployed contract address and after that we will create a frontend for the project and then create a connection with the metamask wallet ans then direct the user to the wallet page whenever any transaction is to be made.
+We will note down the deployed contract address and after that we will create a frontend for the project and then create a connection with the metamask wallet ans then direct the user to the wallet page whenever any transaction is to be made. We can create a post,, like that particular post which will redirect to the metamask and ask for funds. Whereas the two functions Deposit and Withdraw won't run as this is not a secure network and therefore transfering anything is not secure (This is just a custom condition made by me).
+
+
+## About
+
+@Akhanda[https://www.linkedin.com/in/akhanda-pal-biswas-445a88230/]
