@@ -1,7 +1,6 @@
 # ETH-Module-2-Intermediate
 
-We will create a SocialVerse smart contract which has several functions like withdraw, deposit, reserve room and cancel room.
-
+We will create a SocialVerse smart contract which has several functions like Create Post, Like Post and Withdraw along with Deposit.
 
 Now we will first of all create a smart contract and then deploy in in VS Code using hardhat.
 
