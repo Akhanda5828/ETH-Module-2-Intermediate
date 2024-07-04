@@ -138,7 +138,7 @@ The project should now be running on your localhost, typically at http://localho
 
 ## Working
 
-We will document the deployed contract address and subsequently develop the project’s frontend. This frontend will establish a connection with the MetaMask wallet, directing the user to the wallet page for transaction approvals. Users will be able to create and 'like' posts, which will redirect them to MetaMask to authorize transactions. However, the 'Deposit' and 'Withdraw' functions will be disabled due to security concerns, as this network is not secure for fund transfers. This is a custom condition implemented for this project.
+We will document the deployed contract address and place it in the required places of our project files and subsequently develop the project’s frontend. This frontend will establish a connection with the MetaMask wallet, directing the user to the wallet page for transaction approvals. Users will be able to create and 'like' posts, which will redirect them to MetaMask to authorize transactions. However, the 'Deposit' and 'Withdraw' functions will be disabled due to security concerns, as this network is not secure for fund transfers. This is a custom condition implemented for this project.
 
 ## Help
 If you encounter any issues or need further assistance, refer to the help command within the project.
