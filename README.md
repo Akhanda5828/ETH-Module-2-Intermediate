@@ -1,5 +1,5 @@
 ## SocialVerse Smart Contract
-A simple overview of use/purpose.
+The SocialVerse smart contract facilitates the creation of a decentralized social media platform. It allows users to create posts, like posts, and manage associated funds securely. The contract provides functionalities for depositing and withdrawing funds, controlled by the contract owner, and includes features to pause and resume contract activities for enhanced security and management.
 
 ## Description
 The SocialVerse smart contract is designed to create a decentralized social media platform where users can create posts, like posts, and manage funds. The contract includes functionalities for depositing and withdrawing funds, which are controlled by the contract owner. The platform can be paused and unpaused by the owner to manage contract activities securely.
@@ -13,6 +13,11 @@ The SocialVerse smart contract is designed to create a decentralized social medi
 ``
    npm i
 ``
+
+## Sample Smart Contract Code
+
+
+
 ## Executing program
 
 1. Open three terminals in your VS Code and navigate to the project directory in each terminal.
@@ -30,6 +35,10 @@ The SocialVerse smart contract is designed to create a decentralized social medi
    ``
 The project should now be running on your localhost, typically at http://localhost:3000/.
 
+
+## Working
+
+We will document the deployed contract address and subsequently develop the project’s frontend. This frontend will establish a connection with the MetaMask wallet, directing the user to the wallet page for transaction approvals. Users will be able to create and 'like' posts, which will redirect them to MetaMask to authorize transactions. However, the 'Deposit' and 'Withdraw' functions will be disabled due to security concerns, as this network is not secure for fund transfers. This is a custom condition implemented for this project.
 
 ## Help
 If you encounter any issues or need further assistance, refer to the help command within the project.
