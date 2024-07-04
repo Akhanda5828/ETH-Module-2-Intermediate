@@ -16,7 +16,7 @@ The SocialVerse smart contract is designed to create a decentralized social medi
 
 ## Sample Smart Contract Code
 
-`` js
+``` javascript
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
@@ -107,7 +107,7 @@ contract SocialVerse is Ownable, ReentrancyGuard {
         return posts;
     }
 }
-``
+```
 
 
 ## Executing program
