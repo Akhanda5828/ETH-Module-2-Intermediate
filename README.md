@@ -10,6 +10,8 @@ The SocialVerse smart contract is designed to create a decentralized social medi
 1. Clone the project repository from GitHub.
 2. Navigate to the project directory.
 3. Run the following command to install necessary dependencies:
+
+
 ``
    npm i
 ``
@@ -114,17 +116,25 @@ contract SocialVerse is Ownable, ReentrancyGuard {
 
 1. Open three terminals in your VS Code and navigate to the project directory in each terminal.
 2. In the first terminal, start the local blockchain node:
+
+
    ``
     npx hardhat node
    ``
 4. In the second terminal, deploy the contract to the local blockchain network:
+
+
    ``
     npx hardhat run --network localhost scripts/deploy.js
    ``
-5. In the third terminal, launch the front-end of the project:
+6. In the third terminal, launch the front-end of the project:
+
+
    ``
     npm run dev
    ``
+
+   
 The project should now be running on your localhost, typically at http://localhost:3000/.
 
 
