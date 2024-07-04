@@ -10,8 +10,6 @@ The SocialVerse smart contract is designed to create a decentralized social medi
 1. Clone the project repository from GitHub.
 2. Navigate to the project directory.
 3. Run the following command to install necessary dependencies:
-
-
 ``
    npm i
 ``
